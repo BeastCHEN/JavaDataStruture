@@ -2,9 +2,10 @@ package com.chen;
 
 import java.util.Scanner;
 
-public class ArrayQueueDemo {
+public class CircleArrayQueueDemo {
     public static void main(String[] args) {
-        ArrayQueue queue = new ArrayQueue(3);
+        System.out.println("测试数组模拟环形队列");
+        CricleArray queue = new CricleArray(4);
         char key = ' ';
         Scanner scanner = new Scanner(System.in);
         boolean loop = true;
@@ -52,21 +53,21 @@ public class ArrayQueueDemo {
     }
 }
 
-class ArrayQueue {
+
+class CricleArray {
     private int maxSize;
     private int front;
     private int rear;
     private int[] arr;
 
-    public ArrayQueue(int arrMaxsize) {
+    public CricleArray(int arrMaxsize) {
         maxSize = arrMaxsize;
         arr = new int[maxSize];
-        front = -1;
-        rear = -1;
     }
 
+
     public boolean isFull() {
-        return rear == maxSize - 1;
+        return (rear + 1) % maxSize == front;
     }
 
     public boolean isEmpty() {
@@ -78,8 +79,8 @@ class ArrayQueue {
             System.out.println("队列满，不能加入数据");
             return;
         }
-        rear++;
         arr[rear] = n;
+        rear = (rear + 1) % maxSize;
     }
 
     public int getQueue() {
@@ -87,8 +88,10 @@ class ArrayQueue {
             //System.out.println("队列空，不能取数据");
             throw new RuntimeException("队列空，不能取数据");
         }
-        front++;
-        return arr[front];
+        ;
+        int value = arr[front];
+        front = (front + 1) % maxSize;
+        return value;
     }
 
     public void showQueue() {
@@ -96,9 +99,13 @@ class ArrayQueue {
             System.out.println("队列空，没有数据");
             return;
         }
-        for (int i = 0; i < arr.length; i++) {
-            System.out.printf("arr[%d]=%d\n", i, arr[i]);
+        for (int i = front; i < front + size(); i++) {
+            System.out.printf("arr[%d]=%d\n", i % maxSize, arr[i % maxSize]);
         }
+    }
+
+    public int size() {
+        return (rear + maxSize - front) % maxSize;
     }
 
     public int headQueue() {
@@ -106,6 +113,6 @@ class ArrayQueue {
             //System.out.println("队列空，没有数据");
             throw new RuntimeException("队列空，不能取数据");
         }
-        return arr[front + 1];
+        return arr[front];
     }
 }

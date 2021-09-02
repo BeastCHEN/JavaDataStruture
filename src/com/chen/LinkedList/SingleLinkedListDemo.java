@@ -2,6 +2,8 @@ package com.chen.LinkedList;
 
 import jdk.jfr.BooleanFlag;
 
+import java.util.IdentityHashMap;
+import java.util.Stack;
 import java.util.function.IntFunction;
 
 public class SingleLinkedListDemo {
@@ -12,6 +14,8 @@ public class SingleLinkedListDemo {
         HeroNode hero4 = new HeroNode(4, "林冲", "豹子头");
 
         SingleLinkedList singleLinkedList = new SingleLinkedList();
+        System.out.println("------原链表------");
+        singleLinkedList.list();
         //singleLinkedList.add(hero1);
         //singleLinkedList.add(hero4);
         //singleLinkedList.add(hero2);
@@ -21,6 +25,13 @@ public class SingleLinkedListDemo {
         singleLinkedList.addByOrder(hero4);
         singleLinkedList.addByOrder(hero2);
         singleLinkedList.addByOrder(hero3);
+        System.out.println("------原链表------");
+        singleLinkedList.list();
+        System.out.println("------逆序打印------");
+        reversePrint(singleLinkedList.getHead());
+        System.out.println("------反转链表------");
+        reverseList(singleLinkedList.getHead());
+        singleLinkedList.list();
         System.out.println("-------链表------");
         //singleLinkedList.addByOrder(hero3);
         singleLinkedList.list();
@@ -28,17 +39,95 @@ public class SingleLinkedListDemo {
         singleLinkedList.update(newHeroNode);
         System.out.println("------修改后的链表------");
         singleLinkedList.list();
-        singleLinkedList.del(1);
+        //singleLinkedList.del(1);
         singleLinkedList.del(3);
         singleLinkedList.del(2);
-        singleLinkedList.del(4);
+        //singleLinkedList.del(4);
         System.out.println("------删除后的链表------");
         singleLinkedList.list();
+        System.out.println("有效的节点个数" + getLength(singleLinkedList.getHead()));
+        HeroNode res=findLastInderNode(singleLinkedList.getHead(),1);
+        System.out.println("res="+res);
+    }
+
+    /**
+     * 逆序打印
+     */
+    public static void reversePrint(HeroNode head){
+        if (head.next==null){
+            return;
+        }
+        Stack<HeroNode> stack = new Stack<HeroNode>();
+        HeroNode cur = head.next;
+        while (cur!=null){
+            stack.push(cur);
+            cur=cur.next;
+        }
+        while(stack.size()>0){
+            System.out.println(stack.pop());
+        }
+    }
+
+    /**
+     * 链表发转
+     */
+    public static void reverseList(HeroNode head){
+        if (head.next == null||head.next.next==null){
+            return;
+        }
+        HeroNode cur = head.next;
+        HeroNode next=null;
+        HeroNode reverseHead=new HeroNode(0,"","");
+        while(cur!=null){
+            next=cur.next;
+            cur.next=reverseHead.next;
+            reverseHead.next=cur;
+            cur=next;
+        }
+        head.next=reverseHead.next;
+    }
+
+    /**
+     * 查找单链表中倒数第k个节点
+     */
+    public static HeroNode findLastInderNode(HeroNode head, int index) {
+        if (head.next == null) {
+            return null;
+        }
+        int size = getLength(head);
+        if (index <= 0 || index > size) {
+            return null;
+        }
+        HeroNode cur = head.next;
+        for (int i = 0; i < size - index; i++) {
+            cur = cur.next;
+        }
+        return cur;
+    }
+
+    /**
+     * 获取单链表节点个数
+     */
+    public static int getLength(HeroNode head) {
+        if (head.next == null) {
+            return 0;
+        }
+        int length = 0;
+        HeroNode cur = head.next;
+        while (cur != null) {
+            length++;
+            cur = cur.next;
+        }
+        return length;
     }
 }
 
 class SingleLinkedList {
     private HeroNode head = new HeroNode(0, "", "");
+
+    public HeroNode getHead() {
+        return head;
+    }
 
     public void add(HeroNode heroNode) {
         HeroNode temp = head;
@@ -99,23 +188,23 @@ class SingleLinkedList {
         }
     }
 
-    public void del(int no){
-        HeroNode temp=head;
-        boolean flag=false;
-        while (true){
-            if (temp.next==null){
+    public void del(int no) {
+        HeroNode temp = head;
+        boolean flag = false;
+        while (true) {
+            if (temp.next == null) {
                 break;
             }
-            if (temp.next.no==no){
-                flag=true;
+            if (temp.next.no == no) {
+                flag = true;
                 break;
             }
-            temp=temp.next;
+            temp = temp.next;
         }
-        if (flag){
-            temp.next=temp.next.next;
-        }else {
-            System.out.printf("要删除的 %d 节点不存在\n",no);
+        if (flag) {
+            temp.next = temp.next.next;
+        } else {
+            System.out.printf("要删除的 %d 节点不存在\n", no);
         }
     }
 

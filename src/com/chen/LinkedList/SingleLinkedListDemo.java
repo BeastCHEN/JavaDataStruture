@@ -159,9 +159,9 @@ public class SingleLinkedListDemo {
 
     /**
      * 1 定义一个辅助节点aux，永远指向链表头结点，即aux.next=head;
-     * 2 定义当前节点cur和它的上一个节点pre，如果pre.next<=cur.next,那么pre节点和cur节点同时向后移动
-     * 3 如果pre.next>cur.next，切断pre节点和cur节点的引用关系，pre.next=cur.next，把cur节点插入前面恰当位置
-     * 4 定义节点 node1=aux和node2=aux.next，同时向后移动node1和node2，当出现cur.val<node2.val时，把cur插入node1和node2之间
+     * 2 定义当前节点cur和它的上一个节点pre，如果pre.no<cur.no,那么pre节点和cur节点同时向后移动pre = cur,cur = cur.next;
+     * 3 如果pre.no>cur.mo，切断pre节点和cur节点的引用关系，pre.next=cur.next，把cur节点插入前面恰当位置cur.next=pre
+     * 4 定义节点 node1=aux和node2=aux.next，同时向后移动node1和node2，当出现cur.no<node2.no时，把cur插入node1和node2之间
      * 5 cur节点变为pre.next
      */
 
